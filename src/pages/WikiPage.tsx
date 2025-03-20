@@ -121,7 +121,7 @@ const mockPages = {
         "content": [
           {
             "type": "text",
-            "text": "Create new pages with the "+ New Page" button",
+            "text": "Create new pages with the \"+ New Page\" button",
             "styles": {}
           }
         ],
@@ -138,7 +138,7 @@ const mockPages = {
         "content": [
           {
             "type": "text",
-            "text": "Edit existing pages by clicking the "Edit" button",
+            "text": "Edit existing pages by clicking the \"Edit\" button",
             "styles": {}
           }
         ],
