@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,24 +9,20 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
+import { mockPages } from '@/data/mockWikiData';
 
-// Mock data - in a real app this would come from an API
-const mockPages = {
-  'welcome': {
-    id: 'welcome',
-    title: 'Welcome to the Community Wiki',
-    lastEdited: '2 days ago',
-    excerpt: 'This is a collaborative space for our community of 200 people to share and maintain relevant local information.'
-  },
-  'community-guidelines': {
-    id: 'community-guidelines',
-    title: 'Community Guidelines',
-    lastEdited: '5 days ago',
-    excerpt: 'Please follow these guidelines when contributing to our community wiki.'
-  }
-};
-
-const PageTile = ({ page, onClick }: { page: typeof mockPages[keyof typeof mockPages], onClick: () => void }) => {
+const PageTile = ({ page, onClick }: { 
+  page: { 
+    id: string; 
+    title: string; 
+    lastEdited: string; 
+    excerpt?: string;
+  }, 
+  onClick: () => void 
+}) => {
+  // Extract an excerpt from the content if not provided directly
+  const excerpt = page.excerpt || 'Click to view this wiki page';
+  
   return (
     <Card 
       className="h-full cursor-pointer hover:shadow-md transition-all duration-200 hover:border-primary/30 flex flex-col"
@@ -36,7 +32,7 @@ const PageTile = ({ page, onClick }: { page: typeof mockPages[keyof typeof mockP
         <CardTitle className="text-xl font-medium">{page.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col">
-        <p className="text-sm text-muted-foreground mb-4 flex-1">{page.excerpt}</p>
+        <p className="text-sm text-muted-foreground mb-4 flex-1">{excerpt}</p>
         <div className="flex items-center text-xs text-muted-foreground">
           <Book className="h-3 w-3 mr-1" />
           <span>Last edited {page.lastEdited}</span>
@@ -51,6 +47,16 @@ const Index = () => {
   const { toast } = useToast();
   const [newPageDialogOpen, setNewPageDialogOpen] = useState(false);
   const [newPageTitle, setNewPageTitle] = useState('');
+
+  // Process page data for display
+  const pages = Object.entries(mockPages).map(([id, page]) => ({
+    id,
+    title: page.title,
+    lastEdited: page.lastEdited,
+    excerpt: id === 'welcome' 
+      ? 'This is a collaborative space for our community of 200 people to share and maintain relevant local information.'
+      : 'Please follow these guidelines when contributing to our community wiki.'
+  }));
 
   const handlePageClick = (pageId: string) => {
     navigate(`/${pageId}`);
@@ -84,11 +90,11 @@ const Index = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Object.entries(mockPages).map(([id, page]) => (
+          {pages.map((page) => (
             <PageTile 
-              key={id} 
+              key={page.id} 
               page={page} 
-              onClick={() => handlePageClick(id)} 
+              onClick={() => handlePageClick(page.id)} 
             />
           ))}
         </div>
