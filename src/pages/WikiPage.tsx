@@ -346,7 +346,7 @@ const WikiPage = () => {
     setIsEditing(false);
     toast({
       title: "Page updated",
-      description: "Your changes have been saved successfully",
+      description: "Your changes have been saved successfully"
     });
   };
   
@@ -365,7 +365,7 @@ const WikiPage = () => {
     
     toast({
       title: "Page exported",
-      description: "The page content has been exported as JSON",
+      description: "The page content has been exported as JSON"
     });
   };
   
@@ -377,7 +377,7 @@ const WikiPage = () => {
     // In a real app, this would delete from a backend
     toast({
       title: "Page deleted",
-      description: "The page has been deleted successfully",
+      description: "The page has been deleted successfully"
     });
     navigate('/');
     setDeleteDialogOpen(false);
